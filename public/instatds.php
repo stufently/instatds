@@ -6,7 +6,7 @@ $starttime            = microtime(true);
 function writeLog($message,$file = 'out')
 {
     global $log_dir;
-    file_put_contents($log_dir.'/'.$file.'.log',$message);
+    file_put_contents($log_dir.'/out.log',$message,FILE_APPEND | LOCK_EX);
 }
 
 if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {

@@ -1,5 +1,6 @@
 <?php
 
+$auth =['user'=>'password'];
 $log_dir = __DIR__.'/../logs';
 
 $redirect_to_site_url = "https://www.facebook.com";
