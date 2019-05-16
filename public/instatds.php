@@ -170,17 +170,27 @@ if ( $is_bot_agent || $is_bot_network ) {
                                 .($is_bot_network ? 1 : 0)
                                 .($is_bot_agent ? 1 : 0)
                                 ."\n",'bots');
-    header('Location: ' . $redirect_to_site_url, true, 302);
-    exit();
+    if (filter_var($redirect_bots_to, FILTER_VALIDATE_URL)) {
+         header('Location: ' . $redirect_bots_to, true, 302);
+         exit();
+    } else {
+        echo file_get_contents($redirect_bots_to);
+        exit();
+    }
 }
 
+writeLog(preg_replace('~[\r\n]+~', '', time().'---'. $_SERVER['HTTP_USER_AGENT'] ?? '').'---'.$remote_addr.'---00'."\n");
+
 try {
-    echo file_get_contents($filename);
+    if (filter_var($redirect_users_to, FILTER_VALIDATE_URL)) {
+        header('Location: ' . $redirect_users_to, true, 302);
+        exit();
+    } else {
+        echo file_get_contents($redirect_users_to);
+    }
 } catch (\Exception $ex) {
     echo "Error while loading content";
 }
-writeLog(preg_replace('~[\r\n]+~', '', time().'---'. $_SERVER['HTTP_USER_AGENT'] ?? '').'---'.$remote_addr.'---00'."\n");
-
 
 $endtime  = microtime(true);
 $timediff = $endtime - $starttime;
